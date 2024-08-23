@@ -1,8 +1,13 @@
-const logMessage = (message) => {
-  const loggerElement = $("#logger");
+const log = (() => {
+  const logger = $("#logger");
   
-  // Create a new line element to avoid potential XSS attacks and perform more efficient DOM manipulations
-  const newLogEntry = $("<div>").text(message).prepend("* ").prop('outerHTML');
+  if (!logger.length) {
+    console.error("Logger element not found.");
+    return;
+  }
 
-  loggerElement.append(newLogEntry);
-};
+  return function(message) {
+    const formattedMessage = `\n * ${message}`;
+    logger.append(formattedMessage);
+  };
+})();
